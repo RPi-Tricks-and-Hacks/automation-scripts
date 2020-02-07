@@ -19,3 +19,22 @@
   sudo ./uninstall.sh
 ```
 
+# Полезные команды
+Вывод всех установленных пакетов отсортированных по размеру
+```
+dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -nr | more
+```
+Вывод всех опциональных, дополнительных  пакетов (за исключением обязательных, критичных, важных), сортировка по размеру
+```
+dpkg-query -Wf '${Installed-Size}\t${Package}\t${Priority}\n' | egrep '\s(optional|extra)' | cut -f 1,2 | sort -nr | less
+```
+
+####Удалить GCC
+Сначала смотрим что установлено из GCC:
+```
+dpkg --get-selections | grep gcc \-
+```
+Далее удаляем все за исключением самого свежего:
+```
+sudo aptitude purge -y gcc-4.6-base:armhf gcc-4.7-base:armhf gcc-4.8-base:armhf gcc-4.9-base:armhf gcc-5-base:armhf
+```
